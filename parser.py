@@ -1,3 +1,6 @@
+#Connects to the database specified and pulls the datatable requested, writing it to a csv file
+
+
 import csv
 from import_script import package_installer
 
