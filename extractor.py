@@ -19,7 +19,7 @@ def package_installer(package):
 # connect to the desired server.
 
 package_installer('pyodbc')
-pyodbc.connect(r'DRIVER={SQL Server Native Client 11.0};' r'SERVER = (local)\FUSION_SQL14EXP;' r'DATABASE = 41_53116;' r'TRUSTED_CONNECTION = True;')
+pyodbc.connect(r'DRIVER={SQL Server Native Client 11.0};' r'SERVER=(local)\FUSION_SQL14EXP;' r'DATABASE=41_53116;' r'TRUSTED_CONNECTION=True;')
 cursor = connection.cursor()
 
 cursor.execute("SELECT [SampleIDName], [WellPosition], [Value01], [ResultType] FROM ([41_53116].[dbo].[WELL] JOIN [41_53116].[dbo].[SAMPLE] ON [41_53116].[dbo].[SAMPLE].SampleID = [41_53116].[dbo].[WELL].SampleID) JOIN [41_53116].[dbo].[WELL_RESULT] ON [41_53116].[dbo].[WELL_RESULT].WellID = [41_53116].[dbo].[WELL].WellID WHERE [41_53116].[dbo].[WELL_RESULT].ResultType > '01' AND [41_53116].[dbo].[WELL_RESULT].ResultType < '04'")
