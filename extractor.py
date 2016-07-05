@@ -15,7 +15,7 @@ def package_installer(package):
 		globals()[package] = importlib.import_module(package)
 
 
-path_to_validation_file = 'filepath'
+path_to_validation_file = 'C:\Users\melvin.huang\AppData\Local\Microsoft\Windows\Temporary Internet Files\Content.Outlook\1J403MGV\06-19-14 NGS Validation Panel Allele Database.xlsx'
 filename, file_ext = os.path.split(path_to_validation_file)
 new_file_path = filename + 'csv'
 
@@ -46,12 +46,14 @@ with open("datatable.csv", "rb") as datatable_read:
 		val_reader = csv.reader(validation_file)
 		val_reader_indexed = list(val_reader)
 		counter = 1
+		output = open("output.txt", "w+")
 		for i, row in enumerate(reader):
 			if row != val_reader_indexed[i]:
-				print(counter)
+				output.write(counter)
 				counter += 1
 			else:
 				counter += 1
+		output.close()
 		validation_file.close()
 	datatable_read.close()
 
