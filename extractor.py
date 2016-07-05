@@ -1,6 +1,7 @@
 #!/usr/bin/python
 import csv
 import os
+import shutil
 
 # run for windows machines to install the necessary packages to run the rest of the code
 # takes the name of the package to be installed as a string
@@ -14,10 +15,26 @@ def package_installer(package):
 	finally:
 		globals()[package] = importlib.import_module(package)
 
+package_installer('xlrd')
 
-path_to_validation_file = 'C:\Users\melvin.huang\AppData\Local\Microsoft\Windows\Temporary Internet Files\Content.Outlook\1J403MGV\06-19-14 NGS Validation Panel Allele Database.xlsx'
-filename, file_ext = os.path.split(path_to_validation_file)
-new_file_path = filename + 'csv'
+
+path_to_validation_file = r"C:\Users\melvin.huang\Desktop\06-19-14 NGS Validation Panel Allele Database.xlsx"
+filename, file_ext = os.path.splitext(path_to_validation_file)
+new_file_path = filename + '.csv'
+
+def csv_from_excel(excel_file, csv_file):
+    wb = xlrd.open_workbook(excel_file)
+    sh = wb.sheet_by_name('Sheet1')
+    my_csv_file = open(csv_file, 'w+')
+    wr = csv.writer(my_csv_file)
+
+    #fix this later
+    for rownum in xrange(sh.nrows):
+        wr.writerow(sh.row_values(rownum))
+
+    my_csv_file.close()
+
+csv_from_excel(path_to_validation_file, new_file_path)
 
 
 # Connects to the database specified and pulls the datatable requested, writing it to a csv file
@@ -39,7 +56,7 @@ with open("datatable.csv", "w+") as datatable:
 		writer.writerow(row)
 	datatable.close()
 
-
+"""
 with open("datatable.csv", "rb") as datatable_read:
 	with open(new_file_path, "rb") as validation_file:
 		reader = csv.reader(datatable_read)
@@ -59,4 +76,4 @@ with open("datatable.csv", "rb") as datatable_read:
 
 		
 			
-
+"""
