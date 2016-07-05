@@ -15,6 +15,11 @@ def package_installer(package):
 		globals()[package] = importlib.import_module(package)
 
 
+path_to_validation_file = 'filepath'
+filename, file_ext = os.path.split(path_to_validation_file)
+new_file_path = filename + 'csv'
+
+
 # Connects to the database specified and pulls the datatable requested, writing it to a csv file
 # MS SQL Server 2012 and 2014 uses Native Client 11.0. Change the other elements of the string to 
 # connect to the desired server.
@@ -33,11 +38,6 @@ with open("datatable.csv", "w+") as datatable:
 	for row in cursor.fetchall():
 		writer.writerow(row)
 	datatable.close()
-
-
-path_to_validation_file = 'filepath'
-filename, file_ext = os.path.split(path_to_validation_file)
-new_file_path = filename + 'csv'
 
 
 with open("datatable.csv", "rb") as datatable_read:
