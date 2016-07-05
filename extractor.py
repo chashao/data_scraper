@@ -1,5 +1,6 @@
 #!/usr/bin/python
 import csv
+import os
 
 # run for windows machines to install the necessary packages to run the rest of the code
 # takes the name of the package to be installed as a string
@@ -32,3 +33,23 @@ with open("datatable.csv", "w+") as datatable:
 	for row in cursor.fetchall():
 		writer.writerow(row)
 	datatable.close()
+
+
+path_to_validation_file = 'filepath'
+filename, file_ext = os.path.split(path_to_validation_file)
+new_file_path = filename + 'csv'
+
+
+with open("datatable.csv", "rb") as datatable_read:
+	with open(new_file_path, "rb") as validation_file:
+		reader = csv.reader(datatable_read)
+		val_reader = csv.reader(validation_file)
+		val_reader_indexed = list(val_reader)
+		counter = 1
+		for i, row in enumerate(reader):
+			if row != val_reader_indexed[i]:
+				print(counter)
+				counter += 1
+			else:
+				counter += 1
+
