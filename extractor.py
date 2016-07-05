@@ -52,4 +52,9 @@ with open("datatable.csv", "rb") as datatable_read:
 				counter += 1
 			else:
 				counter += 1
+		validation_file.close()
+	datatable_read.close()
+
+		
+			
 
