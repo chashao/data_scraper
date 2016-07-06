@@ -16,7 +16,7 @@ def package_installer(package):
 		globals()[package] = importlib.import_module(package)
 
 package_installer('xlrd')
-
+package_installer('pyodbc')
 
 path_to_validation_file = r"C:\Users\melvin.huang\Desktop\06-19-14 NGS Validation Panel Allele Database.xlsx"
 filename, file_ext = os.path.splitext(path_to_validation_file)
@@ -40,8 +40,6 @@ csv_from_excel(path_to_validation_file, new_file_path)
 # MS SQL Server 2012 and 2014 uses Native Client 11.0. Change the other elements of the string to 
 # connect to the desired server.
 
-package_installer('pyodbc')
-
 # DO NOT TOUCH THE FORMATTING OF THE LINE BELOW!!!!!!
 connection = pyodbc.connect(r'DRIVER={SQL Server Native Client 11.0};' r'SERVER=(local)\FUSION_SQL14EXP;' r'DATABASE=41_53116;' r'TRUSTED_CONNECTION=yes;')
 cursor = connection.cursor()
@@ -49,7 +47,7 @@ cursor = connection.cursor()
 cursor.execute("SELECT [SampleIDName], [WellPosition], [Value01], [ResultType] FROM ([41_53116].[dbo].[WELL] JOIN [41_53116].[dbo].[SAMPLE] ON [41_53116].[dbo].[SAMPLE].SampleID = [41_53116].[dbo].[WELL].SampleID) JOIN [41_53116].[dbo].[WELL_RESULT] ON [41_53116].[dbo].[WELL_RESULT].WellID = [41_53116].[dbo].[WELL].WellID WHERE [41_53116].[dbo].[WELL_RESULT].ResultType > '01' AND [41_53116].[dbo].[WELL_RESULT].ResultType < '04'")
 
 
-with open("datatable.csv", "w+") as datatable:
+with open("C:\Users\melvin.huang\Desktop\datatable.csv", "w+") as datatable:
 	writer = csv.writer(datatable)
 	for row in cursor.fetchall():
 		writer.writerow(row)
