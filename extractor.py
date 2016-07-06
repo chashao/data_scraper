@@ -64,8 +64,7 @@ with open(new_file_path, "rb") as validation_file:
 	for line in datatable_file_reader:
 		for row in validation_file_reader:
 			if line[0] in row:
-				if line[1] in row:
-					print(True)
+				print(True)
 			else:
 				print(False)
 
