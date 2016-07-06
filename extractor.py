@@ -24,13 +24,12 @@ new_file_path = filename + '.csv'
 
 def csv_from_excel(excel_file, csv_file):
     wb = xlrd.open_workbook(excel_file)
-    sh = wb.sheet_by_name('Sheet1')
+    sheet = wb.sheet_by_index(0)
     my_csv_file = open(csv_file, 'w+')
     wr = csv.writer(my_csv_file)
 
-    #fix this later
-    for rownum in xrange(sh.nrows):
-        wr.writerow(sh.row_values(rownum))
+    for rownum in xrange(sheet.nrows):
+        wr.writerow(sheet.row_values(rownum))
 
     my_csv_file.close()
 
@@ -57,6 +56,8 @@ with open("datatable.csv", "w+") as datatable:
 	datatable.close()
 
 """
+The comparison algorithm to be written :)
+
 with open("datatable.csv", "rb") as datatable_read:
 	with open(new_file_path, "rb") as validation_file:
 		reader = csv.reader(datatable_read)
@@ -72,8 +73,5 @@ with open("datatable.csv", "rb") as datatable_read:
 				counter += 1
 		output.close()
 		validation_file.close()
-	datatable_read.close()
-
-		
-			
+	datatable_read.close()		
 """
