@@ -44,7 +44,7 @@ csv_from_excel(path_to_validation_file, new_file_path)
 connection = pyodbc.connect(r'DRIVER={SQL Server Native Client 11.0};' r'SERVER=(local)\FUSION_SQL14EXP;' r'DATABASE=41_53116;' r'TRUSTED_CONNECTION=yes;')
 cursor = connection.cursor()
 
-cursor.execute("SELECT * FROM [41_53116].[dbo].[WELL_DETAIL]")
+cursor.execute("SELECT Value01 FROM [41_53116].[dbo].[WELL_RESULT] WHERE ResultType = '01'")
 
 
 with open("C:\Users\melvin.huang\Desktop\datatable.csv", "w+") as datatable:
@@ -55,7 +55,7 @@ with open("C:\Users\melvin.huang\Desktop\datatable.csv", "w+") as datatable:
 
 
 #The comparison algorithm to be written :)
-"""
+
 with open("C:\Users\melvin.huang\Desktop\datatable.csv", "rb") as datatable_read:
 	with open(new_file_path, "rb") as validation_file:
 		reader = csv.reader(datatable_read)
@@ -64,7 +64,7 @@ with open("C:\Users\melvin.huang\Desktop\datatable.csv", "rb") as datatable_read
 		counter = 1
 		output = open("output.txt", "w+")
 		for i, row in enumerate(reader):
-			if row != val_reader_indexed[i]:
+			if row not in val_reader_indexed[i + 1]:
 				output.write(counter)
 				counter += 1
 			else:
@@ -72,5 +72,3 @@ with open("C:\Users\melvin.huang\Desktop\datatable.csv", "rb") as datatable_read
 		output.close()
 		validation_file.close()
 	datatable_read.close()		
-
-"""
