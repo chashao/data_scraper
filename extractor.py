@@ -61,27 +61,37 @@ with open(new_file_path, "rb") as validation_file:
 	validation_file_reader = csv.reader(validation_file)
 	datatable_file = open("C:\Users\melvin.huang\Desktop\datatable.csv", "rb")
 	datatable_file_reader = csv.reader(datatable_file, delimiter = ' ')
-	tmp = tempfile.mkstemp()
-
-		 
-
-with open("C:\Users\melvin.huang\Desktop\datatable.csv", "w+") as datatable:
-	print datatable[0]
-
-
-
+	for line in datatable_file_reader:
+		for row in validation_file_reader:
+			if line[0] in row:
+				if line[1] in row:
+					print(True)
+			else:
+				print(False)
 
 
 
 
 """
 
-	for line in datatable_file_reader:
+	for row in list(validation_file_reader):
+		for line in datatable_file_reader:
+		
+			if line[0] in row:
+				if line[1] in row:
+					print(True)
+			else:
+				print(False)
+
+
+"""
+
+
+"""
 		for col in line:
 			for row in validation_file_reader:
 				if col in row:
 					print(col + " " + "is in file")
 				else:
 					print("false")
-
 """
