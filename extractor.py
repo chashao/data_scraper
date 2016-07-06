@@ -53,10 +53,10 @@ with open("C:\Users\melvin.huang\Desktop\datatable.csv", "w+") as datatable:
 		writer.writerow(row)
 	datatable.close()
 
-"""
-The comparison algorithm to be written :)
 
-with open("datatable.csv", "rb") as datatable_read:
+#The comparison algorithm to be written :)
+"""
+with open("C:\Users\melvin.huang\Desktop\datatable.csv", "rb") as datatable_read:
 	with open(new_file_path, "rb") as validation_file:
 		reader = csv.reader(datatable_read)
 		val_reader = csv.reader(validation_file)
@@ -72,4 +72,5 @@ with open("datatable.csv", "rb") as datatable_read:
 		output.close()
 		validation_file.close()
 	datatable_read.close()		
+
 """
