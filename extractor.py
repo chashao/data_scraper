@@ -2,6 +2,7 @@
 import csv
 import os
 import shutil
+import tempfile
 
 # run for windows machines to install the necessary packages to run the rest of the code
 # takes the name of the package to be installed as a string
@@ -54,21 +55,33 @@ with open("C:\Users\melvin.huang\Desktop\datatable.csv", "w+") as datatable:
 	datatable.close()
 
 
-#The comparison algorithm to be written :)
 
-with open("C:\Users\melvin.huang\Desktop\datatable.csv", "rb") as datatable_read:
-	with open(new_file_path, "rb") as validation_file:
-		reader = csv.reader(datatable_read)
-		val_reader = csv.reader(validation_file)
-		val_reader_indexed = list(val_reader)
-		counter = 1
-		output = open("output.txt", "w+")
-		for i, row in enumerate(reader):
-			if row not in val_reader_indexed[i + 1]:
-				output.write(counter)
-				counter += 1
-			else:
-				counter += 1
-		output.close()
-		validation_file.close()
-	datatable_read.close()		
+
+with open(new_file_path, "rb") as validation_file:
+	validation_file_reader = csv.reader(validation_file)
+	datatable_file = open("C:\Users\melvin.huang\Desktop\datatable.csv", "rb")
+	datatable_file_reader = csv.reader(datatable_file, delimiter = ' ')
+	tmp = tempfile.mkstemp()
+
+		 
+
+with open("C:\Users\melvin.huang\Desktop\datatable.csv", "w+") as datatable:
+	print datatable[0]
+
+
+
+
+
+
+
+"""
+
+	for line in datatable_file_reader:
+		for col in line:
+			for row in validation_file_reader:
+				if col in row:
+					print(col + " " + "is in file")
+				else:
+					print("false")
+
+"""
