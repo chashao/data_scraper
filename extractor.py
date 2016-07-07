@@ -56,7 +56,7 @@ with open("C:\Users\melvin.huang\Desktop\datatable.csv", "w+") as datatable:
 	datatable.close()
 
 with open(new_file_path, 'rb') as temp:
-	with open("validation.txt", "w+") as validation_txt:
+	with open(r"C:\Users\melvin.huang\Desktop\validation.txt", "w+") as validation_txt:
 		tmp_reader = csv.reader(temp)
 		for row in tmp_reader:
 			rowstring = str(row).strip('[]')
