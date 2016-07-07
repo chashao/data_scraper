@@ -37,6 +37,7 @@ def csv_from_excel(excel_file, csv_file):
 csv_from_excel(path_to_validation_file, new_file_path)
 
 
+
 # Connects to the database specified and pulls the datatable requested, writing it to a csv file
 # MS SQL Server 2012 and 2014 uses Native Client 11.0. Change the other elements of the string to 
 # connect to the desired server.
@@ -54,8 +55,28 @@ with open("C:\Users\melvin.huang\Desktop\datatable.csv", "w+") as datatable:
 		writer.writerow(row)
 	datatable.close()
 
+with open(new_file_path, 'rb') as temp:
+	with open("validation.txt", "w+") as validation_txt:
+		tmp_reader = csv.reader(temp)
+		for row in tmp_reader:
+			rowstring = str(row).strip('[]')
+			validation_txt.write(rowstring)
+
+os.remove(new_file_path)
 
 
+
+
+
+
+
+
+
+
+
+
+
+"""
 
 with open(new_file_path, "rb") as validation_file:
 	validation_file_reader = csv.reader(validation_file)
@@ -68,7 +89,7 @@ with open(new_file_path, "rb") as validation_file:
 			else:
 				print(False)
 
-
+"""
 
 
 """
