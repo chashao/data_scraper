@@ -44,7 +44,8 @@ csv_from_excel(path_to_validation_file, new_file_path)
 # connect to the desired server.
 
 # DO NOT TOUCH THE FORMATTING OF THE LINE BELOW!!!!!!
-connection = pyodbc.connect(r'DRIVER={SQL Server Native Client 11.0};' r'SERVER=(local)\FUSION_SQL14EXP;' r'DATABASE=41_53116;' r'TRUSTED_CONNECTION=yes;')
+connection = pyodbc.connect(r'DRIVER={SQL Server Native Client 11.0};' r'SERVER=(local)\FUSION_SQL14EXP;' \
+	r'DATABASE=41_53116;' r'TRUSTED_CONNECTION=yes;')
 cursor = connection.cursor()
 
 cursor.execute("SELECT [Value01] FROM [41_53116].[dbo].[WELL_RESULT] WHERE ResultType = '01'")
@@ -68,13 +69,11 @@ os.remove(new_file_path)
 
 # Comparison algorithm... Takes in a list of two elemets, converts it to string,
 # and reads through the converted validation file to find matches. 
-#test_str = "Cell ID, IMGT Accession Number"
+
 with open(r"C:\Users\melvin.huang\Desktop\validation.txt", "rb") as validation_file:
 	with open("C:\Users\melvin.huang\Desktop\datatable.csv", "rb") as datatable_file:
 		datatable_file_reader = csv.reader(datatable_file, delimiter = ' ')
 		read_to_str = mmap.mmap(validation_file.fileno(), 0, access = mmap.ACCESS_READ)
-		#if read_to_str.find(test_str) != -1:
-		#	print(True)
 		total_matches = 0
 		for row in datatable_file_reader:
 			pair_str = ', '.join(row)
