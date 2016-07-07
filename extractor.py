@@ -47,9 +47,9 @@ csv_from_excel(path_to_validation_file, new_file_path)
 connection = pyodbc.connect(r'DRIVER={SQL Server Native Client 11.0};' r'SERVER=(local)\FUSION_SQL14EXP;' r'DATABASE=41_53116;' r'TRUSTED_CONNECTION=yes;')
 cursor = connection.cursor()
 
-cursor.execute("SELECT [Value01] FROM [41_53116].[dbo].[WELL_RESULT] WHERE ResultType = '01'")
+cursor.execute("SELECT TOP 100000 [Value01] FROM [41_53116].[dbo].[WELL_RESULT] WHERE ResultType = '01'")
 
-#Writes the data to a csv. I'm assuming that only one column will be selected...
+#Writes the data to a csv. I'm assuming that only one column (pair of alleles) will be selected...
 with open("C:\Users\melvin.huang\Desktop\datatable.csv", "w+") as datatable:
 	writer = csv.writer(datatable)
 	for row in cursor.fetchall():
@@ -75,12 +75,10 @@ with open(r"C:\Users\melvin.huang\Desktop\validation.txt", "rb") as validation_f
 		read_to_str = mmap.mmap(validation_file.fileno(), 0, access = mmap.ACCESS_READ)
 		#if read_to_str.find(test_str) != -1:
 		#	print(True)
-		counter = 1
+		total_matches = 0
 		for row in datatable_file_reader:
 			pair_str = ', '.join(row)
 			if read_to_str.find(pair_str) != -1:
-				print(counter)
-				counter += 1
-			else:
-				counter += 1
+				total_matches += 1
+		print(total_matches)
 
