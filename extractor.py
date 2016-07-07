@@ -49,23 +49,25 @@ cursor = connection.cursor()
 
 cursor.execute("SELECT [Value01] FROM [41_53116].[dbo].[WELL_RESULT] WHERE ResultType = '01'")
 
-
+#Writes the data to a csv. I'm assuming that only one column will be selected...
 with open("C:\Users\melvin.huang\Desktop\datatable.csv", "w+") as datatable:
 	writer = csv.writer(datatable)
 	for row in cursor.fetchall():
 		writer.writerow(row)
 	datatable.close()
 
+
+# Writes the validation csv to a txt file for easy, non-structured parsing.
 with open(new_file_path, 'rb') as temp:
 	with open(r"C:\Users\melvin.huang\Desktop\validation.txt", "w+") as validation_txt:
 		tmp_reader = csv.reader(temp)
 		for row in tmp_reader:
 			rowstring = ', '.join(row)
 			validation_txt.write(rowstring)
-
 os.remove(new_file_path)
 
-
+# Comparison algorithm... Takes in a list of two elemets, converts it to string,
+# and reads through the converted validation file to find matches. 
 #test_str = "Cell ID, IMGT Accession Number"
 with open(r"C:\Users\melvin.huang\Desktop\validation.txt", "rb") as validation_file:
 	with open("C:\Users\melvin.huang\Desktop\datatable.csv", "rb") as datatable_file:
