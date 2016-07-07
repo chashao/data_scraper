@@ -2,6 +2,7 @@
 import csv
 import os
 import shutil
+import mmap
 
 
 # run for windows machines to install the necessary packages to run the rest of the code
@@ -46,7 +47,7 @@ csv_from_excel(path_to_validation_file, new_file_path)
 connection = pyodbc.connect(r'DRIVER={SQL Server Native Client 11.0};' r'SERVER=(local)\FUSION_SQL14EXP;' r'DATABASE=41_53116;' r'TRUSTED_CONNECTION=yes;')
 cursor = connection.cursor()
 
-cursor.execute("SELECT Value01 FROM [41_53116].[dbo].[WELL_RESULT] WHERE ResultType = '01'")
+cursor.execute("SELECT [Value01] FROM [41_53116].[dbo].[WELL_RESULT] WHERE ResultType = '01'")
 
 
 with open("C:\Users\melvin.huang\Desktop\datatable.csv", "w+") as datatable:
@@ -59,59 +60,25 @@ with open(new_file_path, 'rb') as temp:
 	with open(r"C:\Users\melvin.huang\Desktop\validation.txt", "w+") as validation_txt:
 		tmp_reader = csv.reader(temp)
 		for row in tmp_reader:
-			rowstring = str(row).strip('[]')
+			rowstring = ', '.join(row)
 			validation_txt.write(rowstring)
 
 os.remove(new_file_path)
 
 
-
-
-
-
-
-
-
-
-
-
-
-"""
-
-with open(new_file_path, "rb") as validation_file:
-	validation_file_reader = csv.reader(validation_file)
-	datatable_file = open("C:\Users\melvin.huang\Desktop\datatable.csv", "rb")
-	datatable_file_reader = csv.reader(datatable_file, delimiter = ' ')
-	for line in datatable_file_reader:
-		for row in validation_file_reader:
-			if line[0] in row:
-				print(True)
+#test_str = "Cell ID, IMGT Accession Number"
+with open(r"C:\Users\melvin.huang\Desktop\validation.txt", "rb") as validation_file:
+	with open("C:\Users\melvin.huang\Desktop\datatable.csv", "rb") as datatable_file:
+		datatable_file_reader = csv.reader(datatable_file, delimiter = ' ')
+		read_to_str = mmap.mmap(validation_file.fileno(), 0, access = mmap.ACCESS_READ)
+		#if read_to_str.find(test_str) != -1:
+		#	print(True)
+		counter = 1
+		for row in datatable_file_reader:
+			pair_str = ', '.join(row)
+			if read_to_str.find(pair_str) != -1:
+				print(counter)
+				counter += 1
 			else:
-				print(False)
+				counter += 1
 
-"""
-
-
-"""
-
-	for row in list(validation_file_reader):
-		for line in datatable_file_reader:
-		
-			if line[0] in row:
-				if line[1] in row:
-					print(True)
-			else:
-				print(False)
-
-
-"""
-
-
-"""
-		for col in line:
-			for row in validation_file_reader:
-				if col in row:
-					print(col + " " + "is in file")
-				else:
-					print("false")
-"""
