@@ -58,7 +58,48 @@ with open("C:\Users\melvin.huang\Desktop\datatable.csv", "w+") as datatable:
 	datatable.close()
 
 
+with open(new_file_path, "rb") as validation_file:
+	with open(r"C:\Users\melvin.huang\Desktop\validation.csv", "w+") as formatted_file:
+		validation_file_read = csv.reader(validation_file)
+		formatted_file_write = csv.writer(formatted_file)
+		validation_file_read.next()
+		for row in validation_file_read:
+			formatted_file_write.writerow([row[2], 
+				row[3], 
+				row[4],
+				row[5],
+				row[6],
+				row[7],
+				row[8],
+				row[9],
+				row[10],
+				row[11],
+				row[12],
+				row[13],
+				row[14],
+				row[15],
+				row[16],
+				row[17],
+				row[18],
+				row[19]])
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Writes the validation csv to a txt file for easy, non-structured parsing.
+# Likely won't need this part...
+
+"""
+
 with open(new_file_path, 'rb') as temp:
 	with open(r"C:\Users\melvin.huang\Desktop\validation.txt", "w+") as validation_txt:
 		tmp_reader = csv.reader(temp)
@@ -85,3 +126,6 @@ with open(r"C:\Users\melvin.huang\Desktop\validation.txt", "rb") as validation_f
 			else:
 				counter += 1
 		print(str(total_matches) + " total matches")
+
+
+"""
