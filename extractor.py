@@ -5,6 +5,7 @@ import shutil
 import mmap
 
 
+
 # run for windows machines to install the necessary packages to run the rest of the code
 # takes the name of the package to be installed as a string
 def package_installer(package):
@@ -19,6 +20,7 @@ def package_installer(package):
 
 package_installer('xlrd')
 package_installer('pyodbc')
+package_installer('numpy')
 
 path_to_validation_file = r"C:\Users\melvin.huang\Desktop\06-19-14 NGS Validation Panel Allele Database.xlsx"
 filename, file_ext = os.path.splitext(path_to_validation_file)
@@ -55,7 +57,6 @@ with open("C:\Users\melvin.huang\Desktop\datatable.csv", "w+") as datatable:
 	writer = csv.writer(datatable)
 	for row in cursor.fetchall():
 		writer.writerow(row)
-	datatable.close()
 
 
 with open(new_file_path, "rb") as validation_file:
@@ -82,6 +83,24 @@ with open(new_file_path, "rb") as validation_file:
 				row[17],
 				row[18],
 				row[19]])
+
+os.remove(new_file_path)
+
+"""
+with open(r"C:\Users\melvin.huang\Desktop\validation.csv", "rb") as formatted_file:
+	with open("C:\Users\melvin.huang\Desktop\datatable.csv", "rb") as datatable:
+		formatted_reader = csv.reader(formatted_file)
+		read_to_str = mmap.mmap(validation_file.fileno(), 0, access = mmap.ACCESS_READ)
+		for row in formatted_reader:
+			matches = 0
+			for field in row:
+				if read_to_str.find(field) != -1:
+					matches += 1
+			if matches == 19:
+
+
+"""
+
 
 
 
