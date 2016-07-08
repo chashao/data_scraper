@@ -48,7 +48,7 @@ connection = pyodbc.connect(r'DRIVER={SQL Server Native Client 11.0};' r'SERVER=
 	r'DATABASE=41_53116;' r'TRUSTED_CONNECTION=yes;')
 cursor = connection.cursor()
 
-cursor.execute("SELECT [Value01] FROM [41_53116].[dbo].[WELL_RESULT] WHERE ResultType = '01'")
+cursor.execute("SELECT TOP 100000 [Value01] FROM [41_53116].[dbo].[WELL_RESULT] WHERE ResultType = '01'")
 
 #Writes the data to a csv. I'm assuming that only one column (pair of alleles) will be selected...
 with open("C:\Users\melvin.huang\Desktop\datatable.csv", "w+") as datatable:
@@ -75,8 +75,13 @@ with open(r"C:\Users\melvin.huang\Desktop\validation.txt", "rb") as validation_f
 		datatable_file_reader = csv.reader(datatable_file, delimiter = ' ')
 		read_to_str = mmap.mmap(validation_file.fileno(), 0, access = mmap.ACCESS_READ)
 		total_matches = 0
+		counter = 1
 		for row in datatable_file_reader:
 			pair_str = ', '.join(row)
 			if read_to_str.find(pair_str) != -1:
 				total_matches += 1
-		print(total_matches)
+				print(counter)
+				counter += 1
+			else:
+				counter += 1
+		print(str(total_matches) + " " + "total matches")
