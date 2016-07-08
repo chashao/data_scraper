@@ -84,4 +84,4 @@ with open(r"C:\Users\melvin.huang\Desktop\validation.txt", "rb") as validation_f
 				counter += 1
 			else:
 				counter += 1
-		print(str(total_matches) + " " + "total matches")
+		print(str(total_matches) + " total matches")
