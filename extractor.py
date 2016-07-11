@@ -121,19 +121,6 @@ with open(r"C:\Users\melvin.huang\Desktop\validation.csv", "rb") as formatted_fi
 
 """
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 # Writes the validation csv to a txt file for easy, non-structured parsing.
 # Likely won't need this part...
 
