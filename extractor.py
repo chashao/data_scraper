@@ -50,7 +50,7 @@ connection = pyodbc.connect(r'DRIVER={SQL Server Native Client 11.0};' r'SERVER=
 	r'DATABASE=41_53116;' r'TRUSTED_CONNECTION=yes;')
 cursor = connection.cursor()
 
-cursor.execute("SELECT TOP 100000 [Value01] FROM [41_53116].[dbo].[WELL_RESULT] WHERE ResultType = '01'")
+cursor.execute("SELECT [Value01] FROM [41_53116].[dbo].[WELL_RESULT] WHERE ResultType = '01'")
 
 #Writes the data to a csv. I'm assuming that only one column (pair of alleles) will be selected...
 with open("C:\Users\melvin.huang\Desktop\datatable.csv", "w+") as datatable:
@@ -85,6 +85,26 @@ with open(new_file_path, "rb") as validation_file:
 				row[19]])
 
 os.remove(new_file_path)
+
+with open(r"C:\Users\melvin.huang\Desktop\validation.csv", "rb") as formatted_file:
+	with open("C:\Users\melvin.huang\Desktop\datatable.csv", "rb") as datatable:
+#file-splitting operation:
+		formatted_reader = csv.reader(formatted_file)
+		read_to_str = mmap.mmap(datatable.fileno(), 0, access = mmap.ACCESS_READ)
+		for row in formatted_reader:
+			index = 0
+			num_matches = 0
+			while index < (len(row) - 2):
+				chunk = [row[index], row[index + 1]]
+				chunk_string = " ".join(chunk)
+				if read_to_str.find(chunk_string) != -1:
+					num_matches += 1
+					index += 2
+				else:
+					index += 2
+
+				
+
 
 """
 with open(r"C:\Users\melvin.huang\Desktop\validation.csv", "rb") as formatted_file:
