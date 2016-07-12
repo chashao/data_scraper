@@ -91,15 +91,15 @@ with open(r"C:\Users\melvin.huang\Desktop\validation.csv", "rb") as formatted_fi
 #file-splitting operation:
 		formatted_reader = csv.reader(formatted_file)
 		read_to_str = mmap.mmap(datatable.fileno(), 0, access = mmap.ACCESS_READ)
+		line_number = 0
 		for row in formatted_reader:
 			index = 0
-			num_matches = 0
+			line_number += 1
 			while index <= (len(row) - 2):
 				chunk = [row[index], row[index + 1]]
 				chunk_string = " ".join(chunk)
 				if read_to_str.find(chunk_string) != -1:
-					print(chunk_string)
+					print "match found on line ", line_number
 					index += 2
 				else:
 					index += 2
-					print "Can't find this"
