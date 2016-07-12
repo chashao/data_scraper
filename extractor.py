@@ -94,7 +94,7 @@ with open(r"C:\Users\melvin.huang\Desktop\validation.csv", "rb") as formatted_fi
 		for row in formatted_reader:
 			index = 0
 			num_matches = 0
-			while index < (len(row) - 2):
+			while index <= (len(row) - 2):
 				chunk = [row[index], row[index + 1]]
 				chunk_string = " ".join(chunk)
 				if read_to_str.find(chunk_string) != -1:
@@ -102,3 +102,4 @@ with open(r"C:\Users\melvin.huang\Desktop\validation.csv", "rb") as formatted_fi
 					index += 2
 				else:
 					index += 2
+					print "Can't find this"
