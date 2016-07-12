@@ -98,60 +98,7 @@ with open(r"C:\Users\melvin.huang\Desktop\validation.csv", "rb") as formatted_fi
 				chunk = [row[index], row[index + 1]]
 				chunk_string = " ".join(chunk)
 				if read_to_str.find(chunk_string) != -1:
-					num_matches += 1
+					print(chunk_string)
 					index += 2
 				else:
 					index += 2
-
-				
-
-
-"""
-with open(r"C:\Users\melvin.huang\Desktop\validation.csv", "rb") as formatted_file:
-	with open("C:\Users\melvin.huang\Desktop\datatable.csv", "rb") as datatable:
-		formatted_reader = csv.reader(formatted_file)
-		read_to_str = mmap.mmap(validation_file.fileno(), 0, access = mmap.ACCESS_READ)
-		for row in formatted_reader:
-			matches = 0
-			for field in row:
-				if read_to_str.find(field) != -1:
-					matches += 1
-			if matches == 19:
-
-
-"""
-
-# Writes the validation csv to a txt file for easy, non-structured parsing.
-# Likely won't need this part...
-
-"""
-
-with open(new_file_path, 'rb') as temp:
-	with open(r"C:\Users\melvin.huang\Desktop\validation.txt", "w+") as validation_txt:
-		tmp_reader = csv.reader(temp)
-		for row in tmp_reader:
-			rowstring = ', '.join(row)
-			validation_txt.write(rowstring)
-os.remove(new_file_path)
-
-# Comparison algorithm... Takes in a list of two elemets, converts it to string,
-# and reads through the converted validation file to find matches. 
-
-with open(r"C:\Users\melvin.huang\Desktop\validation.txt", "rb") as validation_file:
-	with open("C:\Users\melvin.huang\Desktop\datatable.csv", "rb") as datatable_file:
-		datatable_file_reader = csv.reader(datatable_file, delimiter = ' ')
-		read_to_str = mmap.mmap(validation_file.fileno(), 0, access = mmap.ACCESS_READ)
-		total_matches = 0
-		counter = 1
-		for row in datatable_file_reader:
-			pair_str = ', '.join(row)
-			if read_to_str.find(pair_str) != -1:
-				total_matches += 1
-				print(counter)
-				counter += 1
-			else:
-				counter += 1
-		print(str(total_matches) + " total matches")
-
-
-"""
