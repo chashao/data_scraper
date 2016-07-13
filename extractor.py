@@ -48,8 +48,10 @@ connection = pyodbc.connect(r'DRIVER={SQL Server Native Client 11.0};' r'SERVER=
 	r'DATABASE=41_53116;' r'TRUSTED_CONNECTION=yes;')
 cursor = connection.cursor()
 
+val_file_path = r"C:\Users\melvin.huang\Desktop\validation.csv"
+
 with open(new_file_path, "rb") as validation_file:
-	with open(r"C:\Users\melvin.huang\Desktop\validation.csv", "w+") as formatted_file:
+	with open(val_file_path, "w+") as formatted_file:
 		validation_file_read = csv.reader(validation_file)
 		formatted_file_write = csv.writer(formatted_file)
 		validation_file_read.next()
@@ -77,40 +79,52 @@ with open(new_file_path, "rb") as validation_file:
 
 os.remove(new_file_path)
 
+trays_path = r"C:\Users\melvin.huang\Desktop\trays.csv"
+wells_path = r"C:\Users\melvin.huang\Desktop\wells.csv"
+alleles_path = r"C:\Users\melvin.huang\Desktop\alleles.csv"
+
 def analysis(wellid, sampleIDName):
-	cursor.execute("SELECT * FROM [41_53116].[dbo].[WELL_RESULT] WHERE ResultType = '01' AND WellID = (%s)", (get_well_id))
-	with open(r"C:\Users\melvin.huang\Desktop\alleles.csv", "w+") as alleles_file:
+	cursor.execute("SELECT * FROM [41_53116].[dbo].[WELL_RESULT] WHERE ResultType = '01' AND sampleIDName = (%s)", (sampleIDName))
+	with open(alleles_path, "w+") as alleles_file:
 		writer = csv.writer(alleles_file)
 		for row in cursor.fetchall():
 			writer.writerow(row)
-	with open(r"C:\Users\melvin.huang\Desktop\alleles.csv", "rb") as alleles_file_read:
-		with open(r"C:\Users\melvin.huang\Desktop\validation.csv", "w+") as formatted_file:
+	with open(alleles, "rb") as alleles_file_read:
+		with open(val_file_path, "rb") as formatted_file:
+			#compare the files
+			validation_reader = csv.reader(formatted_file)
+			for line in validation_reader:
+				read_to_str = read_to_str = mmap.mmap(alleles_file_read.fileno(), 0, access = mmap.ACCESS_READ)
+				if line[0] != sampleIDName:
+					continue
+				else:
+					
 
 
 #Returns a csv of all the tray IDs
-with open(r"C:\Users\melvin.huang\Desktop\trays.csv", "w+") as trayfile:
+with open(trays_path, "w+") as trayfile:
 	cursor.execute("SELECT TrayID FROM tray ORDER BY adddt DESC")
 	writer = csv.writer(trayfile)
 	for row in cursor.fetchall():
 		writer.writerow(row)
 
 #for each tray ID, output the wells and samples
-with open(r"C:\Users\melvin.huang\Desktop\trays.csv", "rb") as trayfile:
+with open(trays_path, "rb") as trayfile:
 	tray_reader = csv.reader(trayfile)
 	for row in tray_reader:
 		cursor.execute("SELECT WellID, SampleIDName FROM Well, Sample WHERE TrayID = (%s)", (row))
-		wellsfile = open(r"C:\Users\melvin.huang\Desktop\wells.csv", "w+")
+		wellsfile = open(wells_path, "w+")
 		well_writer = csv.writer(wellsfile)
 		for line in cursor.fetchall():
 			well_writer.writerow(line)
 		wellsfile.close()
-		with open(r"C:\Users\melvin.huang\Desktop\wells.csv", "rb") as wells_file:
+		with open(wells_path, "rb") as wells_file:
 			for line in wells_file:
 				analysis(line[0], line[1])
 		#insert function to read the file and do analysis to it.
 
 
-
+"""
 
 #Writes the data to a csv. I'm assuming that only one column (pair of alleles) will be selected...
 with open("C:\Users\melvin.huang\Desktop\datatable.csv", "w+") as datatable:
@@ -138,3 +152,5 @@ with open(r"C:\Users\melvin.huang\Desktop\validation.csv", "rb") as formatted_fi
 				else:
 					index += 2
 					print "Can't find this"
+
+"""
