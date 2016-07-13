@@ -20,7 +20,7 @@ def package_installer(package):
 
 package_installer('xlrd')
 package_installer('pyodbc')
-package_installer('numpy')
+
 
 path_to_validation_file = r"C:\Users\melvin.huang\Desktop\06-19-14 NGS Validation Panel Allele Database.xlsx"
 filename, file_ext = os.path.splitext(path_to_validation_file)
