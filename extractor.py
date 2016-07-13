@@ -57,7 +57,7 @@ with open(new_file_path, "rb") as validation_file:
 		validation_file_read.next()
 		for row in validation_file_read:
 			formatted_file_write.writerow([
-				row[0]
+				row[0],
 				row[2], 
 				row[3], 
 				row[4],
@@ -79,12 +79,15 @@ with open(new_file_path, "rb") as validation_file:
 
 os.remove(new_file_path)
 
+
+#paths to each file
 trays_path = r"C:\Users\melvin.huang\Desktop\trays.csv"
 wells_path = r"C:\Users\melvin.huang\Desktop\wells.csv"
 alleles_path = r"C:\Users\melvin.huang\Desktop\alleles.csv"
 
+
 def analysis(wellid, sampleIDName):
-	cursor.execute("SELECT * FROM [41_53116].[dbo].[WELL_RESULT] WHERE ResultType = '01' AND sampleIDName = (%s)", (sampleIDName))
+	cursor.execute("SELECT * FROM [41_53116].[dbo].[WELL_RESULT] WHERE ResultType = '01' AND wellid = ?", wellid)
 	with open(alleles_path, "w+") as alleles_file:
 		writer = csv.writer(alleles_file)
 		for row in cursor.fetchall():
@@ -97,30 +100,31 @@ def analysis(wellid, sampleIDName):
 				read_to_str = read_to_str = mmap.mmap(alleles_file_read.fileno(), 0, access = mmap.ACCESS_READ)
 				if line[0] != sampleIDName:
 					continue
-				else:
-					
+				#else:
+
 
 
 #Returns a csv of all the tray IDs
 with open(trays_path, "w+") as trayfile:
-	cursor.execute("SELECT TrayID FROM tray ORDER BY adddt DESC")
+	cursor.execute("SELECT TrayID FROM [41_53116].[dbo].[tray] ORDER BY adddt DESC")
 	writer = csv.writer(trayfile)
 	for row in cursor.fetchall():
 		writer.writerow(row)
 
 #for each tray ID, output the wells and samples
 with open(trays_path, "rb") as trayfile:
-	tray_reader = csv.reader(trayfile)
-	for row in tray_reader:
-		cursor.execute("SELECT WellID, SampleIDName FROM Well, Sample WHERE TrayID = (%s)", (row))
-		wellsfile = open(wells_path, "w+")
+	with open(wells_path, "w+") as wellsfile:
 		well_writer = csv.writer(wellsfile)
-		for line in cursor.fetchall():
-			well_writer.writerow(line)
-		wellsfile.close()
-		with open(wells_path, "rb") as wells_file:
-			for line in wells_file:
-				analysis(line[0], line[1])
+		tray_reader = csv.reader(trayfile)
+		for entry in tray_reader:
+			print entry
+			cursor.execute("SELECT WellID, SampleIDName FROM [41_53116].[dbo].[well],[41_53116].[dbo].[sample] WHERE TrayID = ? AND [well].SampleID = [sample].SampleID", entry)
+			for line in cursor.fetchall():
+				well_writer.writerow(line)
+
+		#with open(wells_path, "rb") as wells_file:
+		#	for line in wells_file:
+		#		analysis(line[0], line[1])
 		#insert function to read the file and do analysis to it.
 
 
