@@ -126,24 +126,3 @@ with open(val_file_path, "rb") as val_file:
 
 
 		#insert function to read the file and do analysis to it.
-
-<<<<<<< HEAD
-with open(r"C:\Users\melvin.huang\Desktop\validation.csv", "rb") as formatted_file:
-	with open("C:\Users\melvin.huang\Desktop\datatable.csv", "rb") as datatable:
-#file-splitting operation:
-		formatted_reader = csv.reader(formatted_file)
-		read_to_str = mmap.mmap(datatable.fileno(), 0, access = mmap.ACCESS_READ)
-		line_number = 0
-		for row in formatted_reader:
-			index = 0
-			line_number += 1
-			while index <= (len(row) - 2):
-				chunk = [row[index], row[index + 1]]
-				chunk_string = " ".join(chunk)
-				if read_to_str.find(chunk_string) != -1:
-					print "match found on line ", line_number
-					index += 2
-				else:
-					index += 2
-=======
->>>>>>> new-algorithm
