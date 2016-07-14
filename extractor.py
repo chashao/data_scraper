@@ -59,7 +59,7 @@ with open(new_file_path, "rb") as validation_file:
 
 		for row in validation_file_read:
 			index = 2
-			while index <= (len(row) - 2):
+			while index <= (len(row) - 6):
 				formatted_file_write.writerow([row[0], row[index], row[index + 1]])
 				index += 2
 
@@ -118,8 +118,8 @@ with open(val_file_path, "rb") as val_file:
 			stringify = " ".join(row)
 			if read_to_str.find(stringify) != -1:
 				print row[0], "found match on pair", row[1], row[2]
-			#else:
-			#	print row[0], "did not find match on pair", row[1], row[2]
+			else:
+				print row[0], "did not find match on pair", row[1], row[2]
 
 
 			#analysis(formatted_file, sample_id_name)
