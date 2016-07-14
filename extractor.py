@@ -3,6 +3,7 @@ import csv
 import os
 import shutil
 import mmap
+import io
 
 
 
@@ -86,24 +87,6 @@ wells_path = r"C:\Users\melvin.huang\Desktop\wells.csv"
 alleles_path = r"C:\Users\melvin.huang\Desktop\alleles.csv"
 
 
-def analysis(wellid, sampleIDName):
-	cursor.execute("SELECT * FROM [41_53116].[dbo].[WELL_RESULT] WHERE ResultType = '01' AND wellid = ?", wellid)
-	with open(alleles_path, "w+") as alleles_file:
-		writer = csv.writer(alleles_file)
-		for row in cursor.fetchall():
-			writer.writerow(row)
-	with open(alleles, "rb") as alleles_file_read:
-		with open(val_file_path, "rb") as formatted_file:
-			#compare the files
-			validation_reader = csv.reader(formatted_file)
-			for line in validation_reader:
-				read_to_str = read_to_str = mmap.mmap(alleles_file_read.fileno(), 0, access = mmap.ACCESS_READ)
-				if line[0] != sampleIDName:
-					continue
-				#else:
-
-
-
 #Returns a csv of all the tray IDs
 with open(trays_path, "w+") as trayfile:
 	cursor.execute("SELECT TrayID FROM [41_53116].[dbo].[tray] ORDER BY adddt DESC")
@@ -122,23 +105,37 @@ with open(trays_path, "rb") as trayfile:
 			for line in cursor.fetchall():
 				well_writer.writerow(line)
 
-		#with open(wells_path, "rb") as wells_file:
-		#	for line in wells_file:
-		#		analysis(line[0], line[1])
-		#insert function to read the file and do analysis to it.
 
+
+with open(wells_path, "rb") as wells_file:
+	with open(alleles_path, "w+") as allele_file:
+		wells_reader = csv.reader(wells_file)
+		writer = csv.writer(allele_file, quoting = csv.QUOTE_MINIMAL)
+		for line in wells_reader:
+			well_id = line[0]
+			sample_id_name = line[1]
+			cursor.execute("SELECT Value01 FROM [41_53116].[dbo].[WELL_RESULT] WHERE ResultType = '01' AND wellid =?", well_id)
+			for line in cursor.fetchall():
+				stringify = "".join(line)
+				writer.writerow([sample_id_name, stringify])
 
 """
+with open(val_file_path, "rb") as val_file:
+	with open(alleles_path, "rb") as allele_file:
+		val_reader = csv.reader(val_file)
+		allele_reader = csv.reader(alleles_file)
+		for row in val_reader:
+			for line in allele_reader:
+				if 
+				
 
-#Writes the data to a csv. I'm assuming that only one column (pair of alleles) will be selected...
-with open("C:\Users\melvin.huang\Desktop\datatable.csv", "w+") as datatable:
-	writer = csv.writer(datatable)
-	for row in cursor.fetchall():
-		writer.writerow(row)
+"""
+			#analysis(formatted_file, sample_id_name)
 
 
+		#insert function to read the file and do analysis to it.
 
-
+"""
 with open(r"C:\Users\melvin.huang\Desktop\validation.csv", "rb") as formatted_file:
 	with open("C:\Users\melvin.huang\Desktop\datatable.csv", "rb") as datatable:
 #file-splitting operation:
