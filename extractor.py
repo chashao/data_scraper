@@ -109,18 +109,21 @@ with open(wells_path, "rb") as wells_file:
 
 print "checkpoint 3"
 
+results_path = r"C:\Users\melvin.huang\Desktop\results.csv"
 
 with open(val_file_path, "rb") as val_file:
 	val_reader = csv.reader(val_file)
 	with open(alleles_path, "rb") as allele_file:
-		read_to_str = mmap.mmap(allele_file.fileno(), 0, access = mmap.ACCESS_READ)
-		for row in val_reader:
-			stringify = " ".join(row)
-			if read_to_str.find(stringify) != -1:
-				print row[0], "found match on pair", row[1], row[2]
-			else:
-				print row[0], "did not find match on pair", row[1], row[2]
-
+		with open(results_path, "wb") as results_file:
+			results_writer = csv.writer(results_file)
+			results_writer.writerow(["Sample ID Name", "Allele 1", "Allele 2", "Match Found"])
+			read_to_str = mmap.mmap(allele_file.fileno(), 0, access = mmap.ACCESS_READ)
+			for row in val_reader:
+				stringify = " ".join(row)
+				if read_to_str.find(stringify) != -1:
+					results_writer.writerow([row[0], row[1], row[2], "YES"])
+				else:
+					results_writer.writerow([row[0], row[1], row[2], "NO"])
 
 			#analysis(formatted_file, sample_id_name)
 
