@@ -39,7 +39,9 @@ def csv_from_excel(excel_file, csv_file):
 
 csv_from_excel(path_to_validation_file, new_file_path)
 
+
 print "Lately, I've been, I've been losing sleep"
+
 
 # Connects to the database specified and pulls the datatable requested, writing it to a csv file
 # MS SQL Server 2012 and 2014 uses Native Client 11.0. Change the other elements of the string to 
@@ -80,8 +82,9 @@ with open(new_file_path, "rb") as validation_file:
 
 os.remove(new_file_path)
 
+
 print "Dreaming about the things that we could be"
-#paths to each file
+
 
 #Returns a csv of all the tray IDs
 with open(trays_path, "w+") as trayfile:
@@ -89,7 +92,10 @@ with open(trays_path, "w+") as trayfile:
 	writer = csv.writer(trayfile)
 	for row in cursor.fetchall():
 		writer.writerow(row)
+
+
 print "But baby, I've been, I've been praying hard"
+
 
 #for each tray ID, output the wells and samples
 with open(trays_path, "rb") as trayfile:
@@ -101,7 +107,10 @@ with open(trays_path, "rb") as trayfile:
 			for line in cursor.fetchall():
 				well_writer.writerow(line)
 
+
 print "Said no more counting dollars"
+
+
 #tags each allele pair with the corresponding sample ID name
 with open(wells_path, "rb") as wells_file:
 	with open(alleles_path, "w+") as allele_file:
@@ -134,7 +143,10 @@ with open(val_file_path, "rb") as val_file:
 				else:
 					results_writer.writerow([row[0], row[1], row[2], "NO"])
 
+
 print "Yeah we'll be counting stars"
+
+
 os.remove(trays_path)
 os.remove(wells_path)
 os.remove(val_file_path)
