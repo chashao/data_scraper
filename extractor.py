@@ -129,6 +129,7 @@ with open(wells_path, "rb") as wells_file:
 print "We'll be counting stars"
 
 #comparison algorithm
+#should I be implementing a similarity algorithm here, like Levenshtein?
 with open(val_file_path, "rb") as val_file:
 	val_reader = csv.reader(val_file)
 	with open(alleles_path, "rb") as allele_file:
