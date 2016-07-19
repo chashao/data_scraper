@@ -3,7 +3,7 @@ import csv
 import os
 import shutil
 import mmap
-
+import sys
 
 # run for windows machines to install the necessary packages to run the rest of the code
 # takes the name of the package to be installed as a string
@@ -23,7 +23,7 @@ package_installer('pyodbc')
 
 driver_name = r'SQL Server Native Client 11.0'
 server_name = r'(local)\FUSION_SQL14EXP'
-database_name = '41_53116'
+database_name = sys.argv[1]
 trusted = 'yes'
 
 
