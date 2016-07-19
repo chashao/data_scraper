@@ -21,7 +21,19 @@ package_installer('xlrd')
 package_installer('pyodbc')
 
 
-path_to_validation_file = r"C:\Users\melvin.huang\Desktop\06-19-14 NGS Validation Panel Allele Database.xlsx"
+driver_name = r'SQL Server Native Client 11.0'
+server_name = r'(local)\FUSION_SQL14EXP'
+database_name = '41_53116'
+trusted = 'yes'
+
+
+def find_val_file(filename):
+	for r, d, f in os.walk("C:\\"):
+		for files in f:
+			if files == filename:
+				return os.path.join(r, files)
+
+path_to_validation_file = find_val_file(r"06-19-14 NGS Validation Panel Allele Database.xlsx")
 filename, file_ext = os.path.splitext(path_to_validation_file)
 new_file_path = filename + '.csv'
 
@@ -48,24 +60,25 @@ print "Lately, I've been, I've been losing sleep"
 # connect to the desired server.
 
 # DO NOT TOUCH THE FORMATTING OF THE LINE BELOW!!!!!!
-#will eventually variable-ize these...
-connection = pyodbc.connect(r'DRIVER={SQL Server Native Client 11.0};' r'SERVER=(local)\FUSION_SQL14EXP;' \
-	r'DATABASE=41_53116;' r'TRUSTED_CONNECTION=yes;')
+#will eventually variable-ize these... and completed :)
+
+
+connection = pyodbc.connect(r'DRIVER={%s};' r'SERVER=%s;' r'DATABASE=%s;' r'TRUSTED_CONNECTION=%s;' % (driver_name, server_name, database_name, trusted))
+
 cursor = connection.cursor()
 
 #paths to each file
-val_file_path = r"C:\Users\melvin.huang\Desktop\validation.csv"
-
-trays_path = r"C:\Users\melvin.huang\Desktop\trays.csv"
-wells_path = r"C:\Users\melvin.huang\Desktop\wells.csv"
-alleles_path = r"C:\Users\melvin.huang\Desktop\alleles.csv"
-results_path = r"C:\Users\melvin.huang\Desktop\results.csv"
+val_file_path = os.path.join(os.getcwd(), r"validation.csv")
+trays_path = os.path.join(os.getcwd(), r"trays.csv") 
+wells_path =  os.path.join(os.getcwd(), r"wells.csv")
+alleles_path =  os.path.join(os.getcwd(), r"alleles.csv")
+results_path =  os.path.join(os.getcwd(), r"results.csv")
 
 
 #SQL queries - will eventually figure out how to turn the database name into a variable
-tray_selector = "SELECT TrayID FROM [41_53116].[dbo].[tray] ORDER BY adddt DESC"
-well_and_sample_selector = "SELECT WellID, SampleIDName FROM [41_53116].[dbo].[well],[41_53116].[dbo].[sample] WHERE TrayID = ? AND [well].SampleID = [sample].SampleID"
-allele_selector = "SELECT Value01 FROM [41_53116].[dbo].[WELL_RESULT] WHERE ResultType = '01' AND wellid =?"
+tray_selector = "SELECT TrayID FROM tray ORDER BY adddt DESC"
+well_and_sample_selector = "SELECT WellID, SampleIDName FROM well, sample WHERE TrayID =? AND [well].SampleID = [sample].SampleID"
+allele_selector = "SELECT Value01 FROM WELL_RESULT WHERE ResultType = '01' AND wellid = ?"
 
 #modifies the validation file into something that can be easily parsed
 with open(new_file_path, "rb") as validation_file:
@@ -130,6 +143,7 @@ print "We'll be counting stars"
 
 #comparison algorithm
 #should I be implementing a similarity algorithm here, like Levenshtein?
+
 with open(val_file_path, "rb") as val_file:
 	val_reader = csv.reader(val_file)
 	with open(alleles_path, "rb") as allele_file:
