@@ -62,7 +62,7 @@ print "Lately, I've been, I've been losing sleep"
 # connect to the desired server.
 
 # DO NOT TOUCH THE FORMATTING OF THE LINE BELOW!!!!!!
-#will eventually variable-ize these... and completed :)
+# will eventually variable-ize these... and completed :)
 
 
 connection = pyodbc.connect(r'DRIVER={%s};' r'SERVER=%s;' r'DATABASE=%s;' r'TRUSTED_CONNECTION=%s;' % (driver_name, server_name, database_name, trusted))
