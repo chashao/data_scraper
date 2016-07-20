@@ -23,7 +23,7 @@ package_installer('pyodbc')
 
 driver_name = r'SQL Server Native Client 11.0'
 server_name = r'(local)\FUSION_SQL14EXP'
-database_name = sys.argv[1]
+database_name = sys.argv[1] # you need to enter that in the terminal yourself
 trusted = 'yes'
 
 
@@ -33,6 +33,8 @@ def find_val_file(filename):
 			if files == filename:
 				return os.path.join(r, files)
 
+
+# the assumption is made here that the name of the file will not be changed for all eternity 
 path_to_validation_file = find_val_file(r"06-19-14 NGS Validation Panel Allele Database.xlsx")
 filename, file_ext = os.path.splitext(path_to_validation_file)
 new_file_path = filename + '.csv'
