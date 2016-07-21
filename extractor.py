@@ -25,7 +25,7 @@ driver_name = r'SQL Server Native Client 11.0'
 server_name = r'(local)\FUSION_SQL14EXP'
 database_name = sys.argv[1] # you need to enter that in the terminal yourself
 trusted = 'yes'
-
+tray_id = sys.argv[2]
 
 def find_val_file(filename):
 	for r, d, f in os.walk("C:\\"):
@@ -78,7 +78,7 @@ results_path =  os.path.join(os.getcwd(), r"results.csv")
 
 
 #SQL queries - will eventually figure out how to turn the database name into a variable
-tray_selector = "SELECT TrayID FROM tray ORDER BY adddt DESC"
+tray_selector = "SELECT TrayID FROM tray WHERE trayID = ?"
 well_and_sample_selector = "SELECT WellID, SampleIDName FROM well, sample WHERE TrayID =? AND [well].SampleID = [sample].SampleID"
 allele_selector = "SELECT Value01 FROM WELL_RESULT WHERE ResultType = '01' AND wellid = ?"
 
@@ -103,7 +103,7 @@ print "Dreaming about the things that we could be"
 
 #Returns a csv of all the tray IDs
 with open(trays_path, "w+") as trayfile:
-	cursor.execute(tray_selector)
+	cursor.execute(tray_selector, tray_id)
 	writer = csv.writer(trayfile)
 	for row in cursor.fetchall():
 		writer.writerow(row)
