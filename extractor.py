@@ -142,6 +142,11 @@ with open(wells_path, "rb") as wells_file:
 				writer.writerow([sample_id_name, first_allele, second_allele])
 
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 82973d841cbfbd467efefffb341bff6d75648fb4
 print "We'll be counting stars"
 
 #comparison algorithm
