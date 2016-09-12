@@ -142,24 +142,6 @@ with open(wells_path, "rb") as wells_file:
 				writer.writerow([sample_id_name, first_allele, second_allele])
 
 
-#In preparation for the type 2 query
-
-"""
-with open(wells_path, "rb") as wells_file:
-	with open(alleles_path, "w+") as allele_file:
-		wells_reader = csv.reader(wells_file)
-		writer = csv.writer(allele_file, delimiter = " ", quoting = csv.QUOTE_MINIMAL)
-		for line in wells_reader:
-			well_id = line[0]
-			sample_id_name = line[1]
-			cursor.execute(allele_selector, well_id)
-			for line in cursor.fetchall():
-				stringify = "".join(line)
-				first_allele = stringify.split()[0]
-				second_allele = stringify.split()[1]
-				writer.writerow([sample_id_name, first_allele, second_allele])
-"""
-
 print "We'll be counting stars"
 
 #comparison algorithm
