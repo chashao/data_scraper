@@ -1,4 +1,4 @@
-# hla_data_parser
+# data_scraper
 This is a tool used to extract data from an SQL database into a .csv file, to be parsed and analyzed.
 
 Things required for the tool to work:
